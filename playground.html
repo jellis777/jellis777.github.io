@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Playground | Jeff Ellis</title>
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="favicon-192x192.png" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="logo">JE</div>
+
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <main>
+      <section class="about">
+        <h1>API Playground</h1>
+        <p>
+          Test my AI backend service. These requests hit real deployed RAG and
+          AI microservices used in my backend architecture.
+        </p>
+
+        <div class="playground-grid">
+          <!-- RAG TESTER -->
+          <div class="playground-card">
+            <h2>RAG Query (/query)</h2>
+            <p>
+              Ask a question based on the seeded notes (Go, Docker,
+              productivity, etc.).
+            </p>
+            <label for="rag-examples" class="example-label"
+              >Suggested Queries:</label
+            >
+            <select id="rag-examples">
+              <option value="">— choose an example —</option>
+              <option value="Explain Go concurrency">
+                Explain Go concurrency
+              </option>
+              <option value="What is a Docker image layer?">
+                What is a Docker image layer?
+              </option>
+              <option value="How do vector embeddings work?">
+                How do vector embeddings work?
+              </option>
+              <option value="Give tips for staying focused while studying">
+                Give tips for staying focused while studying
+              </option>
+              <option value="Give a morning productivity routine">
+                Give a morning productivity routine
+              </option>
+              <option value="Summarize Psalm 23">Summarize Psalm 23</option>
+              <option value="What makes a good backend API?">
+                What makes a good backend API?
+              </option>
+              <option value="Beginner strength training tips">
+                Beginner strength training tips
+              </option>
+              <option value="How do I cook juicy chicken thighs?">
+                How do I cook juicy chicken thighs?
+              </option>
+            </select>
+
+            <textarea
+              id="rag-input"
+              rows="4"
+              placeholder="Example: Explain vector embeddings"
+            ></textarea>
+            <button id="rag-run">Run RAG Query</button>
+
+            <p class="hint">
+              These sample queries work best because they match the notes in the
+              demo database.
+            </p>
+
+            <h3>Response</h3>
+            <pre id="rag-output">Response will appear here.</pre>
+          </div>
+
+          <!-- SUMMARY TESTER -->
+          <div class="playground-card">
+            <h2>Summary Service (/summarize)</h2>
+            <p>
+              Paste any text and get a concise summary using the Summary
+              microservice.
+            </p>
+            <textarea
+              id="summary-input"
+              rows="4"
+              placeholder="Paste text here to summarize..."
+            ></textarea>
+            <button id="summary-run">Summarize Text</button>
+            <h3>Response</h3>
+            <pre id="summary-output">Summary will appear here.</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 Jeff Ellis – Full-Stack Software Engineer</p>
+    </footer>
+
+    <script>
+      async function postJson(url, body) {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(`Error ${res.status}: ${text}`);
+        }
+
+        return res.json();
+      }
+
+      // RAG tester
+      const ragInput = document.getElementById('rag-input');
+      const ragRun = document.getElementById('rag-run');
+      const ragOut = document.getElementById('rag-output');
+
+      const ragExamples = document.getElementById('rag-examples');
+
+      ragExamples.addEventListener('change', () => {
+        if (ragExamples.value !== '') {
+          ragInput.value = ragExamples.value;
+        }
+      });
+
+      ragRun.addEventListener('click', async () => {
+        const q = ragInput.value.trim();
+        if (!q) {
+          ragOut.textContent = 'Please enter a query.';
+          return;
+        }
+
+        ragOut.textContent = 'Sending RAG request...';
+        try {
+          const data = await postJson(
+            'https://notes-memory-core-rag.fly.dev/query',
+            { query: q },
+          );
+          ragOut.textContent = JSON.stringify(data, null, 2);
+        } catch (err) {
+          ragOut.textContent = err.message;
+        }
+      });
+
+      // Summary tester
+      const sumInput = document.getElementById('summary-input');
+      const sumRun = document.getElementById('summary-run');
+      const sumOut = document.getElementById('summary-output');
+
+      sumRun.addEventListener('click', async () => {
+        const text = sumInput.value.trim();
+        if (!text) {
+          sumOut.textContent = 'Please paste some text to summarize.';
+          return;
+        }
+
+        sumOut.textContent = 'Sending summary request...';
+        try {
+          const data = await postJson(
+            'https://ai-summary-service.fly.dev/summary',
+            { text },
+          );
+          sumOut.textContent = JSON.stringify(data, null, 2);
+        } catch (err) {
+          sumOut.textContent = err.message;
+        }
+      });
+    </script>
+  </body>
+</html>
