@@ -25,9 +25,43 @@
       <section class="projects-list">
         <h1>Projects</h1>
         <p class="subtitle">
-          Full-stack and backend projects focused on secure application design,
-          APIs, testing, and scalable architecture.
+          Full-stack and backend projects focused on async processing, secure
+          APIs, testing, cloud deployment, and production-style architecture.
         </p>
+
+        <div class="project-card">
+          <h2>Task Processing System</h2>
+          <p>
+            A production-style task processing system built with ASP.NET Core,
+            Azure SQL, and a background worker. Tasks are created through the
+            API, stored in the database, and processed asynchronously through a
+            queue-style workflow with retry logic, failure handling, and status
+            tracking.
+          </p>
+
+          <a
+            href="https://github.com/jellis777/TaskProcessingSystem"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View Repo
+          </a>
+
+          <a
+            href="https://wonderful-tree-0b6cc6d10.4.azurestaticapps.net"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Live API
+          </a>
+          <p class="project-note">
+            API processes tasks asynchronously using a background worker running
+            in Azure.
+          </p>
+          <p class="project-arch">
+            Architecture: API → Azure SQL → Background Worker
+          </p>
+        </div>
 
         <div class="project-card">
           <h2>Claim Management Platform</h2>
@@ -40,6 +74,7 @@
           <a
             href="https://github.com/jellis777/ClaimManagementPlatform"
             target="_blank"
+            rel="noopener noreferrer"
             >View Repo</a
           >
         </div>
@@ -47,49 +82,37 @@
         <div class="project-card">
           <h2>Notes Memory Core – RAG Extension</h2>
           <p>
-            A Retrieval-Augmented Generation (RAG) system built with Go,
-            pgvector, and OpenAI, featuring semantic search and a query pipeline
-            that retrieves relevant notes and generates grounded AI responses.
+            A Retrieval-Augmented Generation system built with Go, pgvector, and
+            OpenAI. It uses semantic search to retrieve relevant notes and
+            passes that context into an AI response pipeline to generate
+            grounded answers.
           </p>
           <a
             href="https://github.com/ai-backend-course/notes-memory-core-rag"
             target="_blank"
+            rel="noopener noreferrer"
             >View Repo</a
           >
-
           <p><a href="playground.html">Explore live API playground demos</a></p>
-        </div>
-
-        <div class="project-card">
-          <h2>Warranty Claims API</h2>
-          <p class="project-stack">C#, ASP.NET Core, EF Core</p>
-          <p>
-            A layered backend API built with ASP.NET Core and Entity Framework
-            Core, featuring dependency injection, business rules, validation,
-            and unit-tested backend architecture.
-          </p>
-          <a
-            href="https://github.com/jellis777/WarrantyClaimsSystem"
-            target="_blank"
-            >View Repo</a
-          >
         </div>
 
         <div class="project-card">
           <h2>AI Summary Microservice</h2>
           <p>
-            A standalone microservice that summarizes text using either a mock
-            response or OpenAI’s GPT-4o-Mini, designed for reusability,
-            scalability, and clean microservice architecture.
+            A standalone microservice built in Go that summarizes text using
+            mock responses or OpenAI. It was designed with modular architecture,
+            REST endpoints, validation, and service orchestration in mind.
           </p>
           <a
             href="https://github.com/ai-backend-course/ai-summary-service"
             target="_blank"
+            rel="noopener noreferrer"
             >View Repo</a
           >
         </div>
       </section>
     </main>
+
     <footer>
       <p>© 2026 Jeff Ellis – Full-Stack Software Engineer</p>
     </footer>
